@@ -1,0 +1,74 @@
+#include"stm32F0xx.h"
+
+#include "main.h"
+#include<stdio.h>
+
+
+
+
+int main()
+{	//to blink led on port c.9 first we need to enable CLK for port C
+
+	//why clock needed
+	//to Microcontrollers are reliant on their clock source.
+	//The processor, the bus, and the peripherals all use the clock to synchronize their operations.
+	//The clock determines how fast the processor executes its instructions, so it is fundamental to performance.
+
+
+
+	//1//to enable clock we use RCC reset and clock control
+	//AHB peripheral clock enable register (RCC_AHBENR) is 32 bit register used to set clock for ports
+	//port A is at 0th th bit
+//    RCC -> AHBENR |= (1<<17); //ORing of RCC->AHBENR and (17)
+//    RCC -> AHBENR |= (1<<18); //clock on for port B
+    RCC -> AHBENR |= (1<<19);
+//
+//    //2//now we need to set Port A 0-7 as output port.
+//    // GPIOx_MODER general purpose I/Os port Mode Registers, used to set pin of port as output/input.
+//    GPIOA -> MODER |= 65535; // enable Port C pin 0 -7 as a digital output.
+//    GPIOB -> MODER |= 63;
+    GPIOC -> MODER |= (1<<16u);
+
+while(1)
+    {
+   //HAL_Delay(1000);
+
+
+    //3// // turn GPIOC pin 8 ON or asset high
+    // GPIO port output data register (GPIOx_ODR) (x = A to F) used to send 0 or 1 on port pins
+
+    //1.Initializations for LCD Communications:
+    //First set RS= 0, R/W=0, EN=1; And give 10ms delay,
+    //then write the hex code (0X0001 & latch, 0X0038 & latch , 0X000E & latch,0X0010 & latch, 0X0006 & latch)
+    //on data bus(PA0-PA7). The C code below has all this taken care.
+
+//	    GPIOC -> BSRR |= (1<<8)|(1<<9);    //PB.2=RS 1,  PB.1=R/W 0 ,PB.0=En  1   5=101
+//	    HAL_Delay(1000);
+//	    GPIOC -> BRR |= (1<<8)|(1<<9);
+	    GPIOC -> ODR |= (1<<8);    	   //
+	    for(int i=0;i<100000;i++);
+	    GPIOC -> ODR &= ~(1<<8);
+
+//    GPIOB -> BSRR |= (1<<2u)|(1<<0u);    //PB.2=RS 1,  PB.1=R/W 0 ,PB.0=En  1   5=101
+//    HAL_Delay(1000);
+//    GPIOB -> BRR |= (1<<1u)|(1<<0u);    //
+
+//    GPIOC -> BSRR = GPIO_PIN_8;
+//    HAL_Delay(1000);
+//    GPIOC -> BRR |= GPIO_PIN_8;
+//    for(int i =0 ;i<10000;i++);
+//    GPIOB -> ODR |= 4;    //RS R/W En
+//
+//    GPIOA -> ODR |= 0X0001;    //data ports D0 -D7
+//    for(int i =0 ;i<10000;i++);
+//    GPIOA -> ODR |= 0X0038;
+//    for(int i =0 ;i<10000;i++);
+//    GPIOA -> ODR |= 0X000E;
+//    for(int i =0 ;i<10000;i++);
+//    GPIOA -> ODR |= 0X0010;
+
+
+
+
+    }
+}
